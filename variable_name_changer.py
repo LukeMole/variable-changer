@@ -44,12 +44,9 @@ def split_var_words(variables, case_type):
                 split_vars.append(var.split('_'))
             else:
                 split_vars.append([var])
-
-        return split_vars 
     
     elif case_type == 'camel':
         for var in variables:
-            words = set()
             for I in range(len(var)):
                 if var[I].isupper():
                     var = var.replace(var[I], f' {var[I].lower()}')
@@ -58,9 +55,8 @@ def split_var_words(variables, case_type):
 
                 
             split_vars.append(var)
-        
-        return split_vars
 
+    return split_vars
 
 if __name__ == "__main__":
     file_path = "test_camel.js"

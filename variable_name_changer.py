@@ -61,36 +61,55 @@ def split_var_words(variables, case_type):
 
     return split_vars
 
-def rename_variables(var_dicts):
+def rename_variables(var_dicts, case_type):
     dictionary = MultiDictionary()
     #print(dictionary.synonym('en',"good"))
     new_vars = {}
     for var_dict in var_dicts:
-        new_var_words = []
+        new_var_words = ''
         for var_name in var_dict:
+            first_word = True
             for word in var_dict[var_name]:
                 new_words = dictionary.synonym('en', word)
                 if len(new_words) == 0:
                     new_word = word
                 else:
                     new_word = new_words[random.randint(0, len(new_words)-1)]
+                    while (' ' in new_word) or ('`' in new_word):
+                        new_word = new_words[random.randint(0, len(new_words)-1)]
                 print(new_word)
-                new_var_words.append(new_word)
+    
+                if case_type == 'snake':
+                    if first_word:
+                        new_var_words = new_var_words + f'{new_word}'
+                    else:
+                        new_var_words = new_var_words + f'_{new_word}'
+                elif case_type == 'camel':
+                    if first_word:
+                        new_var_words = new_var_words + new_word.lower()
+                    else:
+                        new_var_words = new_var_words + new_word.capitalize()
+                first_word = False
+
+            new_word = new_word.strip('_')
             
             new_vars = new_vars | {var_name : new_var_words}
     
-    print(new_vars)
+
+    return(new_vars)
 
 if __name__ == "__main__":
-    file_path = "test_snake.py"
+    file_path = "test_camel.js"
+    case_type = 'camel'
     variables = fetch_variables(file_path)
     print(len(variables))
     for variable in variables:
         #print(variable)
         ...
 
-    split_vars = split_var_words(variables, 'snake')
+    split_vars = split_var_words(variables, case_type)
     print(split_vars)
-    rename_variables(split_vars)
+    new_vars = rename_variables(split_vars, case_type)
+    print(new_vars)
 
     #create_new_names(variables, 'S')

@@ -75,8 +75,11 @@ def rename_variables(var_dicts, case_type):
                     new_word = word
                 else:
                     new_word = new_words[random.randint(0, len(new_words)-1)]
-                    while (' ' in new_word) or ('`' in new_word):
+                    while (' ' in new_word) or ('`' in new_word) or ('-' in new_word):
                         new_word = new_words[random.randint(0, len(new_words)-1)]
+
+                if word.isupper():
+                    new_word = new_word.upper()
                 print(new_word)
     
                 if case_type == 'snake':
@@ -99,8 +102,8 @@ def rename_variables(var_dicts, case_type):
     return(new_vars)
 
 if __name__ == "__main__":
-    file_path = "test_camel.js"
-    case_type = 'camel'
+    file_path = "test_snake.py"
+    case_type = 'snake'
     variables = fetch_variables(file_path)
     print(len(variables))
     for variable in variables:

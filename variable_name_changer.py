@@ -1,5 +1,7 @@
 import os
 import random
+import math
+
 from PyMultiDictionary import MultiDictionary
 
 def fetch_variables(file_path):
@@ -65,7 +67,13 @@ def rename_variables(var_dicts, case_type):
     dictionary = MultiDictionary()
     #print(dictionary.synonym('en',"good"))
     new_vars = {}
+    current_var_num = 0
+    total_vars = len(var_dicts)
+    percentage_complete = 0
     for var_dict in var_dicts:
+        percentage_complete = math.floor(current_var_num / total_vars)
+        print(percentage_complete)
+        current_var_num += 1
         new_var_words = ''
         for var_name in var_dict:
             first_word = True
@@ -80,7 +88,7 @@ def rename_variables(var_dicts, case_type):
 
                 if word.isupper():
                     new_word = new_word.upper()
-                print(new_word)
+                #print(new_word)
     
                 if case_type == 'snake':
                     if first_word:
@@ -105,14 +113,14 @@ if __name__ == "__main__":
     file_path = "test_snake.py"
     case_type = 'snake'
     variables = fetch_variables(file_path)
-    print(len(variables))
+    #print(len(variables))
     for variable in variables:
         #print(variable)
         ...
 
     split_vars = split_var_words(variables, case_type)
-    print(split_vars)
+    #print(split_vars)
     new_vars = rename_variables(split_vars, case_type)
-    print(new_vars)
+    #print(new_vars)
 
     #create_new_names(variables, 'S')
